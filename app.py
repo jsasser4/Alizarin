@@ -13,6 +13,10 @@ notes = {
     3: {'title': 'Third Note', 'text': 'This is my third note', 'date': '10/18/2022'}
 }
 
+@app.route('/home')
+def home_page():
+
+    return render_template('home.html')
 
 @app.route('/')
 @app.route('/index')
