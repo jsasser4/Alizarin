@@ -39,7 +39,7 @@ def get_project(project_id):
     my_project = db.session.query(Project).filter_by(id = project_id).one()
     return render_template('project.html' , project=my_project, user = a_user)
 
-@app.route('/projects/new', methods = ['GET', 'POST'])
+@app.route('/projects/newProject', methods = ['GET', 'POST'])
 def new_project():
 
     if request.method == 'POST':
@@ -57,7 +57,26 @@ def new_project():
         a_user = db.session.query(User).filter_by(email='lfrazee1@uncc.edu').one()
         return render_template('newProject.html' , user = a_user)    
 
+@app.route('/projects/edit/<project_id>', methods = ['GET', 'POST'])
+def update_project(project_id):
+    if request.method == 'POST':
+        title = request.form['title']
+        text = request.form['noteText']
 
+        project = db.session.query(Project).filter_by(id = project_id).one()
+        project.title = title
+        project.text=text
+        db.session.add(project)
+        db.session.commit()
+
+        return redirect(url_for('get_projects'))
+    else:
+        #retrieve user from database
+        a_user = db.session.query(User).filter_by(email='lfrazee1@uncc.edu').one()
+        #retrieve project
+        my_project = db.session.query(Project).filter_by(id =project_id).one()
+
+        return render_template('new.html' , note=my_project, user = a_user)
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
