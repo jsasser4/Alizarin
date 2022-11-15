@@ -13,7 +13,7 @@ from models import Project as Project
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db_testfile.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 #  Bind SQLAlchemy db object to this Flask app
 db.init_app(app)
@@ -76,7 +76,16 @@ def update_project(project_id):
         #retrieve project
         my_project = db.session.query(Project).filter_by(id =project_id).one()
 
-        return render_template('new.html' , note=my_project, user = a_user)
+        return render_template('newProject.html' , project=my_project, user = a_user)
+
+@app.route('/projects/delete/<project_id>', methods = ['POST'])
+def delete_project(project_id):
+   
+    my_project = db.session.query(Project).filter_by(id =project_id).one()
+    db.session.delete(my_project)
+    db.session.commit()
+
+    return redirect(url_for('get_projects'))
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
