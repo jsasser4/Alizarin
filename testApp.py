@@ -39,7 +39,7 @@ def get_project(project_id):
     my_project = db.session.query(Project).filter_by(id = project_id).one()
     return render_template('project.html' , project=my_project, user = a_user)
 
-@app.route('/projects/newProject', methods = ['GET', 'POST'])
+@app.route('/projects/new', methods = ['GET', 'POST'])
 def new_project():
 
     if request.method == 'POST':
@@ -86,6 +86,11 @@ def delete_project(project_id):
     db.session.commit()
 
     return redirect(url_for('get_projects'))
+
+@app.route('/testHTML')
+def testUI():
+  
+    return render_template("testHTML.html")
 
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
