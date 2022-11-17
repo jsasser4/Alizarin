@@ -2,20 +2,14 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import redirect, url_for
-from datetime import date
 from database import db
-
-from models import Note as Note
-from models import User as User
-
+from models import User, Note
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
-#  Bind SQLAlchemy db object to this Flask app
 db.init_app(app)
-# Setup models
 with app.app_context():
     db.create_all()   # run under the app context
 
@@ -26,15 +20,16 @@ notes = {
     3: {'title': 'Third Note', 'text': 'This is my third note', 'date': '10/18/2022'}
 }
 
+
+
 @app.route('/home')
 def home_page():
-
     return render_template('home.html')
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('notes.html', user=a_user)
+    return render_template('notes.html')
 
 
 @app.route('/notes')
@@ -44,8 +39,8 @@ def get_notes():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+    """
     form = RegisterForm()
-
     if request.method == 'POST' and form.validate_on_submit():
         # salt and hash password
         h_password = bcrypt.hashpw(
@@ -65,11 +60,12 @@ def register():
         return redirect(url_for('get_notes'))
 
     # something went wrong - display register view
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form)"""
 
 
+"""
 @app.route('/login', methods=['POST', 'GET'])
-def login():
+def login()
     login_form = LoginForm()
     # validate_on_submit only validates using POST
     if login_form.validate_on_submit():
@@ -99,6 +95,7 @@ def logout():
         session.clear()
 
     return redirect(url_for('index'))
+"""
 
 if __name__ == '__main__':
     app.run()

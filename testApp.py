@@ -55,7 +55,7 @@ def new_project():
         return redirect(url_for('get_projects'))
     else:
         a_user = db.session.query(User).filter_by(email='lfrazee1@uncc.edu').one()
-        return render_template('newProject.html' , user = a_user)    
+        return render_template('new_project.html', user = a_user)
 
 @app.route('/projects/edit/<project_id>', methods = ['GET', 'POST'])
 def update_project(project_id):
@@ -76,7 +76,7 @@ def update_project(project_id):
         #retrieve project
         my_project = db.session.query(Project).filter_by(id =project_id).one()
 
-        return render_template('newProject.html' , project=my_project, user = a_user)
+        return render_template('new_project.html', project=my_project, user = a_user)
 
 @app.route('/projects/delete/<project_id>', methods = ['POST'])
 def delete_project(project_id):

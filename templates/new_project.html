@@ -8,8 +8,6 @@
         <!-- styles -->
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     </head>
-    
-
         <h1>Welcome {{user.name}} !</h1>
         {% if project %}
             <form action ="{{url_for('update_project', project_id = project.id) }}" method="post">
