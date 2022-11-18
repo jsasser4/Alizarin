@@ -2,8 +2,13 @@
 {% block title %}Home{% endblock %}
 {% block stylesheets %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app/home.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app/my_other_stylesheet.css') }}">
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', filename='js/app/my_awesome_javascript.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app/my_awesome_javascript.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-    <h1>Home Page Text!</h1>
 {% endblock %}
