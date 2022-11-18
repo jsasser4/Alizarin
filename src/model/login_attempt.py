@@ -5,7 +5,7 @@ from src import db
 
 class LoginAttempt(db.Model):
     id: int = db.Column(Integer, primary_key=True)
-    email: str = db.Column(String(100))
+    email: str = db.Column(String(128))
     password_hash: str = db.Column(String(256))
     created_at: datetime = db.Column(DateTime())
 

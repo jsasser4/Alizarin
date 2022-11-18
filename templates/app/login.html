@@ -1,9 +1,33 @@
 {% extends 'app/layout/default.html' %}
 {% block title %}Login{% endblock %}
 {% block stylesheets %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/app/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/form.css') }}">
 {% endblock %}
 
 {% block content %}
-    <h1>Login Page Text!</h1>
+    <div class="formwrapper">
+        <h2 class="title">Login</h2>
+        <form method="POST" action="/login">
+            <div class="form-field">{{ form.email.label }} {{ form.email }}
+                {% if form.email.errors %}
+                    <ul class="errors">
+                        {% for error in form.email.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="form-field">{{ form.password.label }} {{ form.password }}
+                {% if form.password.errors %}
+                    <ul class="errors">
+                        {% for error in form.password.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            {{ form.submit }}
+        </form>
+    </div>
 {% endblock %}

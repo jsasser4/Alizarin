@@ -13,10 +13,11 @@ bridge_table = db.Table(
 
 class Project(db.Model):
     id: int = db.Column(Integer, primary_key=True)
-    name: str = db.Column(String(100))
+    name: str = db.Column(String(128))
     created_by_id: int = db.Column(Integer, ForeignKey("user.id"))
-    created_by: User = db.relationship("user", foreign_keys=[created_by_id])
-    members: [User] = db.relationship("user", secondary=bridge_table)
+    created_by: User = db.relationship(User, foreign_keys=[created_by_id])
+
+    members: [User] = db.relationship(User, secondary=bridge_table)
     created_at: datetime = db.Column("created_at", DateTime())
 
     __tablename__: str = "project"

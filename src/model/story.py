@@ -5,11 +5,11 @@ from src import db
 
 class Story(db.Model):
     id: int = db.Column(Integer, primary_key=True)
-    name: str = db.Column(String(100))
+    name: str = db.Column(String(128))
     text: str = db.Column(String(2048))
     created_at: datetime = db.Column(DateTime())
 
-    __tablename__ = "Story"
+    __tablename__ = "story"
 
     def __int__(self, name, text):
         self.name = name
