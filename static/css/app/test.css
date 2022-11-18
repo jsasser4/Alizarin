@@ -24,3 +24,16 @@
     background-color: #CD5C5C;
     color: white;
 }
+
+.fill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden
+}
+.fill img {
+    object-fit: cover;
+    flex-shrink: 0;
+    min-width: 100%;
+    max-height: 256px;
+}
