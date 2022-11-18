@@ -1,9 +1,24 @@
 {% extends 'app/layout/default.html' %}
 {% block title %}Projects{% endblock %}
 {% block stylesheets %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/app/projects.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/projects.css') }}">
 {% endblock %}
 
 {% block content %}
-    <h1>Project Page Text!</h1>
+    <form method="POST" action="/projects">
+        <div class="form-field">{{ form.name.label }} {{ form.name }}
+            {% if form.name.errors %}
+                <ul class="errors">
+                    {% for error in form.name.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {{ form.submit }}
+    </form>
+
+    <div class="">
+        <p>List all active projects</p>
+    </div>
 {% endblock %}

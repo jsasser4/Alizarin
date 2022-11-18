@@ -1,7 +1,7 @@
 from flask import Flask, url_for, request, session, redirect
 from flask import render_template
 from bcrypt import hashpw, gensalt, checkpw
-from src.form import RegisterForm, LoginForm
+from src.form import RegisterForm, LoginForm, ProjectForm, SprintForm, TaskForm
 
 from src import db
 from src.model.task import Task
@@ -22,17 +22,39 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+@app.route('/test')
+def test():
+    return render_template('app/test.html')
+
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('app/home.html')
 
-@app.route('/projects')
+@app.route('/project/<project_id>', methods=['GET'])
+def get_project(project_id):
+    current_user = db.session.query(User).filter_by(id=session['user_id']).one()
+    project = db.session.query(Project).filter_by(id=project_id).one()
+    if current_user not in project.members:
+        return redirect(url_for('logout'))
+    print(f'first_name={current_user.first_name}, last_name={current_user.last_name}')
+    print(f'project_name={project.name} members={list(project.members)}')
+
+
+@app.route('/projects', methods=['POST', 'GET'])
 def get_projects():
     current_user = db.session.query(User).filter_by(id=session['user_id']).one()
+    form = ProjectForm()
     print(f'first_name={current_user.first_name}, last_name={current_user.last_name}')
-    return render_template('app/projects.html', user=current_user)
+    if request.method == "POST" and form.validate_on_submit():
+        name = request.form['name']
+        project = Project(name=name, created_by=current_user)
+        db.session.add(project)
+        db.session.commit()
+        return redirect(url_for('get_project', project_id=project.id))
+
+    return render_template('app/projects.html', user=current_user, form=form)
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -73,6 +95,7 @@ def login():
         return render_template("app/login.html", form=login_form)
     else:
         return render_template("app/login.html", form=login_form)
+
 
 @app.route('/logout')
 def logout():

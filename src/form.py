@@ -51,9 +51,23 @@ class LoginForm(FlaskForm):
             raise ValidationError('Incorrect username or password.')
 
 
-class CommentForm(FlaskForm):
+class ProjectForm(FlaskForm):
     class Meta:
         csrf = False
+    name = StringField('Project Name', validators=[Length(1, 32)])
+    submit = SubmitField('Create Project')
 
-    comment = TextAreaField('Comment', validators=[Length(min=1)])
-    submit = SubmitField('Add Comment')
+
+class SprintForm(FlaskForm):
+    class Meta:
+        csrf = False
+    name = StringField('Sprint Name', validators=[Length(1, 32)])
+    submit = SubmitField('Create Sprint')
+
+
+class TaskForm(FlaskForm):
+    class Meta:
+        csrf = False
+    name = StringField('Task Name', validators=[Length(1, 32)])
+    description = TextAreaField('Sprint Description', validators=[Length(1, 1024)])
+    submit = SubmitField('Add task to Sprint')

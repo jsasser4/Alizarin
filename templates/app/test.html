@@ -1,0 +1,32 @@
+{% extends 'app/layout/default.html' %}
+{% block title %}Projects{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/projects.css') }}">
+{% endblock %}
+
+{% block content %}
+    <img src="{{ url_for('static', filename='image/banner.jpg') }}" width="970" height="200" alt="Geometric Pattern">
+    <h1>Projects</h1>
+    <table id="projects">
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Priority</th>
+        </tr>
+        <tr>
+            <td>Project 1</td>
+            <td>11/18/22</td>
+            <td>High</td>
+        </tr>
+        <tr>
+            <td>Project 2</td>
+            <td>11/18/22</td>
+            <td>Medium</td>
+        </tr>
+        <tr>
+            <td>Project 3</td>
+            <td>11/18/22</td>
+            <td>Low</td>
+        </tr>
+    </table>
+{% endblock %}

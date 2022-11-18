@@ -17,7 +17,7 @@ class Project(db.Model):
     created_by_id: int = db.Column(Integer, ForeignKey("user.id"))
     created_by: User = db.relationship(User, foreign_keys=[created_by_id])
 
-    members: [User] = db.relationship(User, secondary=bridge_table)
+    members = db.relationship(User, secondary=bridge_table)
     created_at: datetime = db.Column("created_at", DateTime())
 
     __tablename__: str = "project"
@@ -25,5 +25,4 @@ class Project(db.Model):
     def __int__(self, name: str, created_by: User):
         self.name = name
         self.created_by = created_by
-        self.members = [created_by]
         self.created_at = datetime.now()

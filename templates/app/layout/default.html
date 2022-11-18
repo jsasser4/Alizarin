@@ -15,7 +15,9 @@
 <div class="full-nav-wrapper">
   {% include 'app/layout/nav.html' %}
 </div>
-{% block content %}{% endblock %}
+
+{% block content %}
+{% endblock %}
 
 <script src="{{ url_for('static', filename='js/app/layout/default.js') }}"></script>
 {% block scripts %}{% endblock %}
