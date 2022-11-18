@@ -22,7 +22,7 @@ class Project(db.Model):
 
     __tablename__: str = "project"
 
-    def __int__(self, name: str, created_by: User, members: [User], created_at: datetime):
+    def __int__(self, name: str, created_by: User):
         self.name = name
         self.created_by = created_by
         self.members = [created_by]
