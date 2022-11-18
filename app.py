@@ -1,17 +1,16 @@
 from flask import Flask
 from flask import render_template
-from flask import request
-from flask import redirect, url_for
-from database import db
-from models import User, Note
-
+from src import db
+from src.model import login_attempt, project, sprint, story, task, user
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+
+
 with app.app_context():
-    db.create_all()   # run under the app context
+    db.create_all()
 
 a_user = {'name': 'Taylor Sasser', 'email': 'jsasser4@uncc.edu'}
 notes = {
@@ -21,10 +20,10 @@ notes = {
 }
 
 
-
 @app.route('/home')
 def home_page():
     return render_template('home.html')
+
 
 @app.route('/')
 @app.route('/index')
@@ -50,7 +49,7 @@ def register():
         last_name = request.form['lastname']
         # create user model
         new_user = User(first_name, last_name, request.form['email'], h_password)
-        # add user to database and commit
+        # add user to database.py and commit
         db.session.add(new_user)
         db.session.commit()
         # save the user's name to the session
