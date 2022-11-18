@@ -14,7 +14,8 @@ class Sprint(db.Model):
 
     __tablename__ = "sprint.html"
 
-    def __int__(self, name: str):
+    def __int__(self, name: str, project: Project):
         self.name = name
+        self.project = project
         self.tasks = []
         self.created_at = datetime.now()
