@@ -11,14 +11,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-a_user = {'name': 'Taylor Sasser', 'email': 'jsasser4@uncc.edu'}
-notes = {
-    1: {'title': 'First Note', 'text': 'This is my first note', 'date': '10/18/2022'},
-    2: {'title': 'Second Note', 'text': 'This is my second note', 'date': '10/18/2022'},
-    3: {'title': 'Third Note', 'text': 'This is my third note', 'date': '10/18/2022'}
-}
-
-
 @app.route('/register')
 def home():
     return render_template('app/register.html')
@@ -41,4 +33,4 @@ def get_login():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
