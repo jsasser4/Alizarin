@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="{% block metaDescription %}{% endblock %}">
+  <meta name="keywords" content="{% block metaKeywords %}{% endblock %}">
+  {% block meta %}{% endblock %}
+  <title>{% block title %}{% endblock %} - Alizarin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app/layout/default.css') }}">
+  {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="full-nav-wrapper">
+  {% include 'app/layout/nav.html' %}
+  {% block banner %}{% endblock %}
+</div>
+{% block content %}{% endblock %}
+
+<script src="{{ url_for('static', filename='js/app/layout/default.js') }}"></script>
+{% block scripts %}{% endblock %}
+{% block javascript %}{% endblock %}
+</body>
+</html>

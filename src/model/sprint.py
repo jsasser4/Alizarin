@@ -9,7 +9,7 @@ class Sprint(db.Model):
     tasks: [object] = db.relationship("tasks", back_populates="parent")
     created_at: datetime = db.Column(DateTime())
 
-    __tablename__ = "sprint"
+    __tablename__ = "sprint.html"
 
     def __int__(self, name: str):
         self.name = name

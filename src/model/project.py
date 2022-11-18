@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, ForeignKey, Integer, Table, String, DateTime
+from sqlalchemy import ForeignKey, Integer, String, DateTime
 from src import db
 from .user import User
 
