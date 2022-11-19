@@ -1,5 +1,7 @@
 from datetime import datetime
 from sqlalchemy import ForeignKey, Integer, String, DateTime
+from sqlalchemy.sql.functions import now
+
 from src import db
 from .user import User
 from .project_users import bridge_table
@@ -15,7 +17,7 @@ class Project(db.Model):
     created_by: User = db.relationship(User, foreign_keys=[created_by_id])
 
     members = db.relationship(User, secondary=bridge_table, back_populates="projects")
-    created_at: datetime = db.Column("created_at", DateTime())
+    created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 
     __tablename__: str = "project"
 
@@ -24,4 +26,3 @@ class Project(db.Model):
         self.comment = comment
         self.created_by = created_by
         self.members.append(created_by)
-        self.created_at = datetime.now()

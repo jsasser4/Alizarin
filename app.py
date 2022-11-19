@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Flask, url_for, request, session, redirect
 from flask import render_template
 from bcrypt import hashpw, gensalt, checkpw
@@ -55,9 +57,9 @@ def add_project():
     current_user = db.session.query(User).filter_by(id=session['user_id']).one()
     form = ProjectForm()
     if request.method == "POST" and form.validate_on_submit():
-        first_name = request.form['name']
-        last_name = request.form['comment']
-        project = Project(name=first_name, comment=last_name, created_by=current_user)
+        name = request.form['name']
+        comment = request.form['comment']
+        project = Project(name=name, comment=comment, created_by=current_user)
         db.session.add(project)
         db.session.commit()
         return redirect(url_for('get_projects'))
@@ -73,14 +75,16 @@ def edit_project(project_id):
     form.comment.data = project.comment
 
     if request.method == "POST" and form.validate_on_submit():
-        project.name = form.name
-        project.comment = form.comment
+        project_name = request.form['name']
+        comment = request.form['comment']
+        project.name = project_name
+        project.comment = comment
         db.session.commit()
         return redirect(url_for('get_projects'))
 
-    return render_template('app/add.html', form=form)
+    return render_template('app/edit.html', form=form, project=project)
 
-@app.route('/project/delete/<product_id>', methods=['POST'])
+@app.route('/project/delete/<project_id>', methods=['POST'])
 def delete_project(project_id):
     current_user = db.session.query(User).filter_by(id=session['user_id']).one()
     project = db.session.query(Project).filter_by(id=project_id).one()
@@ -100,8 +104,9 @@ def view_project(project_id):
 def get_projects():
     current_user = db.session.query(User).filter_by(id=session['user_id']).one()
     user_projects = db.session.query(Project).filter_by(created_by=current_user).all()
-
-    return render_template('app/projects.html')
+    if len(user_projects) == 0:
+        return redirect(url_for('add_project'))
+    return render_template('app/projects.html', projects=user_projects)
 
 
 @app.route('/register', methods=['POST', 'GET'])
