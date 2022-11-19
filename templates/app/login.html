@@ -6,8 +6,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="formwrapper">
-        <h2 class="title">Login</h2>
+    <div class="formwrapper" style="background-color: blue">
+        <h2 class="title" style="background-color: inherit">Login</h2>
         <form method="POST" action="/login">
             <div class="form-field">{{ form.email.label }} {{ form.email }}
                 {% if form.email.errors %}

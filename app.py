@@ -26,20 +26,38 @@ with app.app_context():
 def test():
     return render_template('app/test.html')
 
-
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('app/home.html')
 
+
+@app.route('/projects/<project_id>/<sprint_id>', methods=['POST', 'GET'])
+def add_task(project_id, sprint_id):
+    current_user = db.session.query(User).filter_by(id=session['user_id']).first_or_404()
+    current_sprint = db.session.query(Sprint).filter_by(id=sprint_id, project_id=project_id)
+    form = TaskForm()
+    if request.method == "POST" and form.validate_on_submit():
+        name = request.form['name']
+        desc = request.form['desc']
+        sprint = Task(name=name, description=desc, sprint=current_sprint)
+        db.session.add(sprint)
+        db.session.commit()
+
+    return render_template('app/sprints.html', user=current_user, form=form)
+
 @app.route('/project/<project_id>', methods=['GET'])
 def get_project(project_id):
     current_user = db.session.query(User).filter_by(id=session['user_id']).one()
     project = db.session.query(Project).filter_by(id=project_id).one()
-    if current_user not in project.members:
-        return redirect(url_for('logout'))
-    print(f'first_name={current_user.first_name}, last_name={current_user.last_name}')
-    print(f'project_name={project.name} members={list(project.members)}')
+    form = SprintForm()
+    if request.method == "POST" and form.validate_on_submit():
+        name = request.form['name']
+        sprint = Sprint(name=name, project=project)
+        db.session.add(sprint)
+        db.session.commit()
+
+    return render_template('app/project.html', project=project)
 
 
 @app.route('/projects', methods=['POST', 'GET'])
@@ -51,22 +69,20 @@ def get_projects():
         name = request.form['name']
         project = Project(name=name, created_by=current_user)
         db.session.add(project)
+        db.session.add()
         db.session.commit()
         return redirect(url_for('get_project', project_id=project.id))
-
     return render_template('app/projects.html', user=current_user, form=form)
 
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     form = RegisterForm()
-
     if request.method == 'POST' and form.validate_on_submit():
         h_password = hashpw(
             request.form['password'].encode('utf-8'), gensalt())
         first_name = request.form['firstname']
         last_name = request.form['lastname']
-
         new_user = User(first_name=first_name,
                         last_name=last_name,
                         email=request.form['email'],
@@ -75,9 +91,7 @@ def register():
         db.session.commit()
         session['user'] = first_name
         session['user_id'] = new_user.id
-
         return redirect(url_for('get_projects'))
-
     return render_template('app/register.html', form=form)
 
 
@@ -90,7 +104,6 @@ def login():
             session['user'] = the_user.first_name
             session['user_id'] = the_user.id
             return redirect(url_for('get_projects'))
-
         login_form.password.errors = ["Incorrect username or password."]
         return render_template("app/login.html", form=login_form)
     else:

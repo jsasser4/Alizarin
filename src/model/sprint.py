@@ -9,7 +9,7 @@ class Sprint(db.Model):
     name: str = db.Column(String(256))
     project_id: int = db.Column(Integer, ForeignKey("project.id"))
     project: Project = db.relationship(Project, foreign_keys=[project_id])
-    tasks: [] = db.relationship("Task", back_populates="sprint")
+    tasks = db.relationship("Task", back_populates="sprint")
     created_at: datetime = db.Column(DateTime())
 
     __tablename__ = "sprint"

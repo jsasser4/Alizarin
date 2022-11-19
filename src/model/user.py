@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Integer, String, DateTime
 from src import db
-
+from .project_users import bridge_table
 
 class User(db.Model):
     id: int = db.Column(Integer, primary_key=True)
@@ -10,6 +10,8 @@ class User(db.Model):
     email: str = db.Column(String(128))
     password_hash: str = db.Column(String(256))
     created_at: datetime = db.Column(DateTime())
+
+    projects = db.relationship("Project", secondary=bridge_table, back_populates="members")
 
     __tablename__ = "user"
 
