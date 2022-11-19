@@ -22,16 +22,19 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+
 @app.route('/test')
 def test():
     return render_template('app/test.html')
 
+
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('app/home.html')
+    return redirect(url_for('/login'))
 
 
+"""
 @app.route('/projects/<project_id>/<sprint_id>', methods=['POST', 'GET'])
 def add_task(project_id, sprint_id):
     current_user = db.session.query(User).filter_by(id=session['user_id']).first_or_404()
@@ -43,36 +46,62 @@ def add_task(project_id, sprint_id):
         sprint = Task(name=name, description=desc, sprint=current_sprint)
         db.session.add(sprint)
         db.session.commit()
-
     return render_template('app/sprints.html', user=current_user, form=form)
-
-@app.route('/project/<project_id>', methods=['GET'])
-def get_project(project_id):
-    current_user = db.session.query(User).filter_by(id=session['user_id']).one()
-    project = db.session.query(Project).filter_by(id=project_id).one()
-    form = SprintForm()
-    if request.method == "POST" and form.validate_on_submit():
-        name = request.form['name']
-        sprint = Sprint(name=name, project=project)
-        db.session.add(sprint)
-        db.session.commit()
-
-    return render_template('app/project.html', project=project)
+"""
 
 
-@app.route('/projects', methods=['POST', 'GET'])
-def get_projects():
+@app.route('/project/add', methods=['GET', 'POST'])
+def add_project():
     current_user = db.session.query(User).filter_by(id=session['user_id']).one()
     form = ProjectForm()
-    print(f'first_name={current_user.first_name}, last_name={current_user.last_name}')
     if request.method == "POST" and form.validate_on_submit():
-        name = request.form['name']
-        project = Project(name=name, created_by=current_user)
+        first_name = request.form['name']
+        last_name = request.form['comment']
+        project = Project(name=first_name, comment=last_name, created_by=current_user)
         db.session.add(project)
-        db.session.add()
         db.session.commit()
-        return redirect(url_for('get_project', project_id=project.id))
-    return render_template('app/projects.html', user=current_user, form=form)
+        return redirect(url_for('get_projects'))
+    return render_template('app/add.html', form=form)
+
+@app.route('/project/edit/<project_id>', methods=['GET', 'POST'])
+def edit_project(project_id):
+    project = db.session.query(Project).filter_by(id=project_id).one()
+    if project is None:
+        return redirect(url_for('get_projects'))
+    form = ProjectForm()
+    form.name.data = project.name
+    form.comment.data = project.comment
+
+    if request.method == "POST" and form.validate_on_submit():
+        project.name = form.name
+        project.comment = form.comment
+        db.session.commit()
+        return redirect(url_for('get_projects'))
+
+    return render_template('app/add.html', form=form)
+
+@app.route('/project/delete/<product_id>', methods=['POST'])
+def delete_project(project_id):
+    current_user = db.session.query(User).filter_by(id=session['user_id']).one()
+    project = db.session.query(Project).filter_by(id=project_id).one()
+    db.session.delete(project)
+    db.session.commit()
+    return render_template('app/projects.html')
+
+
+@app.route('/project/<project_id>', methods=['GET'])
+def view_project(project_id):
+    current_user = db.session.query(User).filter_by(id=session['user_id']).one()
+    current_project = db.session.query(Project).filter_by(id=project_id).first_or_404()
+    return render_template('app/project.html', project=current_project)
+
+
+@app.route('/projects', methods=['GET'])
+def get_projects():
+    current_user = db.session.query(User).filter_by(id=session['user_id']).one()
+    user_projects = db.session.query(Project).filter_by(created_by=current_user).all()
+
+    return render_template('app/projects.html')
 
 
 @app.route('/register', methods=['POST', 'GET'])

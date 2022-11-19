@@ -55,6 +55,7 @@ class ProjectForm(FlaskForm):
     class Meta:
         csrf = False
     name = StringField('Project Name', validators=[Length(1, 32)])
+    comment = TextAreaField('Comment', validators=[Length(1, 1024)])
     submit = SubmitField('Create Project')
 
 
