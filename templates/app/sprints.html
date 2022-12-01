@@ -1,0 +1,35 @@
+{% extends 'app/layout/default.html' %}
+{% block title %}Projects{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/default.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="padding">
+        <table>
+            <tr>
+              <th>Sprint Name</th>
+              <th>Task</th>
+              <th>sprint data</th>
+              <th>sprint data </th>
+              <th>delete </th>
+
+            </tr>
+        
+            <tr>
+                <td>insert sprint name</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><button class="button button-delete">delete</button></td>
+           
+            </tr>
+        </table> 
+        
+    </div>
+</div>
+
+
+{% endblock %}

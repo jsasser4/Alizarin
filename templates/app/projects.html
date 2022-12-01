@@ -1,19 +1,19 @@
 {% extends 'app/layout/default.html' %}
 {% block title %}Projects{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/test.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/default.css') }}">
 {% endblock %}
 
 {% block content %}
-    <div class="fill">
-     <img src="{{ url_for('static', filename='image/banner.jpg') }}" alt="Geometric Pattern">
-    </div>
+<div class="card">
+    <div class="padding">
     <h1>Projects</h1>
     <table id="projects">
         <tr>
             <th>Project Name</th>
             <th>Created At</th>
             <th>Created By</th>
+            <th></th>
         </tr>
         {% for p in projects %}
         <tr>
@@ -28,4 +28,6 @@
         </tr>
         {% endfor %}
     </table>
+    </div>
+</div>
 {% endblock %}
