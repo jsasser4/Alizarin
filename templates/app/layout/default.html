@@ -19,7 +19,7 @@
     <p>find image for header.</p>
   </div>
 
-  <hr>
+
 
   <!-- top navigation bar -->
   <div class="topnav">
@@ -28,14 +28,16 @@
     <a href="#">Link</a>
   </div>
 
-   <hr>
+  
 
-<div class="row">
-  <div class="column">
-    <h2>Column</h2>
-    {% block content %}
+   <div class="outer-row">
+    <div class="outer-outer-column">
+      <h2>outer-column</h2>
+        {% block content %}
 
-    {% endblock %}
+        {% endblock %}
+      </div>
+    
   </div>
 
 </div>
