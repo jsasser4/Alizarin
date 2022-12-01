@@ -39,8 +39,8 @@ body {
 
 /* Create three equal columns that floats next to each other */
 .column {
-  float: left;
-  width: 48%;
+  
+  width: 58%;
   padding: 5px;
 }
 
@@ -54,4 +54,98 @@ body {
   .column {
     width: 100%;
   }
+}
+
+/* for table */
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #26fdce4b;
+}
+
+
+/* The collapsible for task */
+.collapsible {
+  background-color: rgb(0, 99, 112);
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: rgba(106, 137, 145, 0.178);
+}
+
+.content {
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f148;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  gap: 10px;
+  background-color: #2196F3;
+  padding: 10px;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+.item1 {
+  grid-column: 1 / 5;
+}
+
+.button {
+  border: none;
+  color: white;
+  padding: 4px 4px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button-delete {
+  background-color: white; 
+  color: black; 
+  border: 2px solid #008f88;
+}
+
+
+a:link, a:visited {
+  background-color: #02a2be6c;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: rgba(0, 140, 150, 0.781);
 }
