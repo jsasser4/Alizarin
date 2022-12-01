@@ -108,6 +108,10 @@ def get_projects():
         return redirect(url_for('add_project'))
     return render_template('app/projects.html', projects=user_projects)
 
+@app.route('/sprints')
+def get_sprints():
+    return render_template('app/sprints.html')
+
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
