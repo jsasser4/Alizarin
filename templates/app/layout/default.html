@@ -13,37 +13,41 @@
 </head>
 <body>
 <div class="full-nav-wrapper">
-
   {% include 'app/layout/nav.html' %}
-<div class="grid-container">
-  <div class="top-bar">
-    <div class="item1">
-      <div class="top-bar"> 
-        <div class="bar my-white wide-pace my-padding card">
+  <div class="header">
+    <h1>Header</h1>
+    <p>find image for header.</p>
+  </div>
+
+  <hr>
+
+  <!-- top navigation bar -->
+  <div class="topnav">
+    <a href="#">Link</a>
+    <a href="#">Link</a>
+    <a href="#">Link</a>
+  </div>
+
+   <hr>
+
+<div class="row">
+  <div class="column">
+    <h2>Column</h2>
+    {% block content %}
+
+    {% endblock %}
+  </div>
   
-    <a href="#home" class="bar-item my-button"><b>TB</b> TaskBoss</a>
-    <!-- Float links to the right. Hide them on small screens -->
-    <div class="right-jus hide-small">
-      <div class="right-jus hide-small"> 
-      <a href="#login" class="bar-item my-button">login</a>
-      <a href="#sign Up" class="bar-item my-button">Sign up</a>
+  <div class="column">
+    <h2>Column</h2>
+    
   </div>
-  </div>
-</div></div>
-    </div>
-   </div>
+  
 
-
-   <hr style="height:75px">
-            
-   
-</div>
 </div>
 
-<div class="item2">
-{% block content %}
-</div>
-{% endblock %}
+
+
 
 <script src="{{ url_for('static', filename='js/app/layout/default.js') }}"></script>
 {% block scripts %}{% endblock %}
