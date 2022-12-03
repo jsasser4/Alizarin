@@ -33,7 +33,7 @@ def test():
 @app.route('/')
 @app.route('/index')
 def index():
-    return redirect(url_for('/login'))
+    return redirect(url_for('login'))
 
 
 """
