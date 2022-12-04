@@ -14,35 +14,11 @@
 <body>
 <div class="full-nav-wrapper">
   {% include 'app/layout/nav.html' %}
-  <div class="header">
-    <h1><b>ALIZARIN</b></h1>
-  </div>
-
-
-
-  <!-- top navigation bar -->
-  <div class="topnav">
-    <a href="#"><b>Projects</b></a>
-    <a href="#"><b>Sprints</b></a>
-    <a href="#"><b>Register</b></a>
-    <a href="#"><b>Logout</b></a>
-  </div>
-
-  
-
-   
-        {% block content %}
-
-        {% endblock %}
-      </div>
-    
-  </div>
-
 </div>
 
-
-
-
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
 <script src="{{ url_for('static', filename='js/app/layout/default.js') }}"></script>
 {% block scripts %}{% endblock %}
 {% block javascript %}{% endblock %}

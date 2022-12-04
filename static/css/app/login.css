@@ -119,9 +119,6 @@ html,
       background-color: #0f030300;
       padding-left: 0px;
       padding-right: 0px;
-     
-      
-      
     }
     
     .grid-container > div {
@@ -195,7 +192,6 @@ html,
 }
 
 .content {
-  
   display: none;
   overflow: hidden;
   background-color: #f1f1f1;
@@ -204,7 +200,6 @@ html,
 form {
   background: rgba(255, 255, 255, 0.541);
   width: 100%;
-
 }
 
 .form-field {
@@ -225,6 +220,13 @@ form {
   width: px;
   box-shadow: 0 0 5px rgba(65, 67, 144, 0.1);
   padding: 30px;
+}
+
+.center {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 label {

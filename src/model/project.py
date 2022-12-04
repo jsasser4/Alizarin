@@ -1,6 +1,5 @@
 from datetime import datetime
 from sqlalchemy import ForeignKey, Integer, String, DateTime
-from sqlalchemy.sql.functions import now
 
 from src import db
 from .user import User
