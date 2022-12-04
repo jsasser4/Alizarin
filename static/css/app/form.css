@@ -1,31 +1,31 @@
 form {
-  background: white;
+  background: #C4D6B0;
   width: 100%;
 }
 
 .form-field {
   position: relative;
+  padding: 20px;
 }
 
 .title {
   font-size: 1.7rem;
   font-weight: 300;
-  border-bottom: 1px solid #dbe3ec;
-  padding: 5px;
+  padding: 10px;
   margin: 0 0 40px 0;
 }
 
 .formwrapper {
   position: relative;
+  font-family: 'Courier New', Courier, monospace;
   background: white;
-  width: 350px;
-  box-shadow: 0 0 5px rgba(65, 67, 144, 0.1);
+  width: 650px;
   padding: 10px;
 }
 
 label {
-  font-size: .9em;
-  color: green;
+  font-size: 1.5em;
+  color: #000f08;
   margin-bottom: 3px;
   display: block;
   font-weight: 300;
@@ -35,11 +35,11 @@ input, textarea{
   padding: 10px 13px;
   margin-bottom: 15px;
   border-radius: 2px;
-  border: 1px solid #d4d9e3;
-  font-weight: 200;
-  color: #4d5060;
+  border: 2px solid #000f08;
+  font-weight: 300;
+  color: #000f08;
   font-family: 'Poppins', sans-serif;
-  font-size: .9em;
+  font-size: 1em;
 
 }
 
@@ -51,7 +51,7 @@ input[type="text"]:hover,
 input[type="password"]:hover,
 textarea:hover,
 select:hover {
-  border-color: green;
+  border-color: #000f08;
   background: lightyellow;
 }
 
@@ -59,31 +59,31 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 textarea:focus {
   background: white;
-  border-color: green;
+  border-color: #000f08;
   box-shadow: unset;
 }
 
 input[type="submit"] {
-  background: green;
+  background: #000f08;
   border: 0;
-  color: white;
+  color: #C4D6B0;
   border-radius: 2px;
   margin-top: 15px;
   font-weight: 400;
-  border: 1px solid green;
+  border: 2px solid #C4D6B0;
   transition: all .3s ease-out;
 }
 
 input[type="submit"]:hover {
   cursor: pointer;
-  background: white;
-  color: green;
+  background: #C4D6B0;
+  color: #000f08;
 }
 
 .success-wrapper {
   background: white;
   width: 350px;
-  box-shadow: 0 0 5px rgba(65, 67, 144, 0.1);
+  box-shadow: 0 0 5px #7A7978;
   padding: 50px;
 }
 
