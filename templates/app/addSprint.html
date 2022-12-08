@@ -1,0 +1,26 @@
+{% extends 'app/layout/default.html' %}
+{% block title %}Login{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/form.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="center">
+    <div class="formwrapper"><br>
+        <h2 class="title">Add a Sprint</h2>
+        <form method="POST" action="{{ url_for('add_sprint') }}">
+            <div class="form-field">{{ form.name.label }} {{ form.name }}
+                {% if form.name.errors %}
+                    <ul class="errors">
+                        {% for error in form.name.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            {{ form.submit }}
+        </form>
+    </div>
+</div>
+{% endblock %}
