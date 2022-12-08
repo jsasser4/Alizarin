@@ -65,6 +65,19 @@ def add_project():
         return redirect(url_for('get_projects'))
     return render_template('app/add.html', form=form)
 
+
+@app.route('/sprint', methods=['GET', 'POST'])
+def add_sprint():
+    current_user = db.session.query(User).filter_by(id=session['user_id']).one()
+    form = SprintForm()
+    if request.method == "POST" and form.validate_on_submit():
+        name = request.form['name']
+        sprint = Sprint(name=name, created_by=current_user)
+        db.session.add(sprint)
+        db.session.commit()
+        return redirect(url_for('get_sprints'))
+    return render_template('app/addSprint.html', form=form)
+
 @app.route('/project/edit/<project_id>', methods=['GET', 'POST'])
 def edit_project(project_id):
     project = db.session.query(Project).filter_by(id=project_id).one()
