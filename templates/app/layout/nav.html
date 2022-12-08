@@ -1,10 +1,9 @@
   <div class="header">
-    <h1><b>ALIZARIN</b></h1>
+    <h1><b>TaskBoss</b></h1>
   </div>
   <!-- top navigation bar -->
   <div class="topnav">
-    <a href="#"><b>Projects</b></a>
-    <a href="#"><b>Sprints</b></a>
-    <a href="#"><b>Register</b></a>
-    <a href="#"><b>Logout</b></a>
+    <a href="{{ url_for('login') }}"><b>Login</b></a>
+    <a href="{{ url_for('register') }}"><b>Register</b></a>
+    <a href="{{ url_for('logout') }}"><b>Logout</b></a>
   </div>
