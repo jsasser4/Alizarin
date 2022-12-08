@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>HTML Forms</h2>
+
+<form action="/action_page.php">
+  <label for="sname">Sprint name:</label><br>
+  <input type="text" id="sname" name="sname" value="sprint name"><br><br>
+  
+  
+  <label for="start">Start Date:</label><br>
+  <input type="date" id="start" name="start"><br><br>
+  
+  <label for="end">End Date:</label><br>
+  <input type="date" id="end" name="end"><br><br>
+  
+  <input type="submit" value="Submit">
+  
+  
+  
+</form> 
+
+
+</body>
+</html>
