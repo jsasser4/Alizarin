@@ -72,7 +72,7 @@ def add_sprint():
     form = SprintForm()
     if request.method == "POST" and form.validate_on_submit():
         name = request.form['name']
-        sprint = Sprint(name=name, created_by=current_user)
+        sprint = Sprint(name=name,  created_by=current_user)
         db.session.add(sprint)
         db.session.commit()
         return redirect(url_for('get_sprints'))
@@ -121,9 +121,15 @@ def get_projects():
         return redirect(url_for('add_project'))
     return render_template('app/projects.html', projects=user_projects)
 
-@app.route('/sprints')
-def get_sprints():
-    return render_template('app/sprints.html')
+@app.route('/sprints/<project_id>', methods=['GET'])
+def get_sprints(project_id):
+    pid = project_id
+    current_user = db.session.query(User).filter_by(id=session['user_id']).one()
+    project_sprints = db.session.query(Sprint).filter_by(project_id=pid).all()
+    if len(project_sprints) == 0:
+        return redirect(url_for('add_sprint'))
+    return render_template('app/sprints.html', sprints=project_sprints)
+   
 
 
 @app.route('/register', methods=['POST', 'GET'])
