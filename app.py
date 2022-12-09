@@ -35,6 +35,10 @@ def test():
 def index():
     return redirect(url_for('login'))
 
+@app.route('/tasksSprints')
+def index():
+    return redirect(url_for('login'))
+
 
 """
 @app.route('/projects/<project_id>/<sprint_id>', methods=['POST', 'GET'])
