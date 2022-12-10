@@ -35,10 +35,6 @@ def test():
 def index():
     return redirect(url_for('login'))
 
-@app.route('/tasksSprints')
-def index():
-    return redirect(url_for('login'))
-
 
 """
 @app.route('/projects/<project_id>/<sprint_id>', methods=['POST', 'GET'])
@@ -125,6 +121,7 @@ def get_projects():
         return redirect(url_for('add_project'))
     return render_template('app/projects.html', projects=user_projects)
 
+
 @app.route('/sprints/<project_id>', methods=['GET'])
 def get_sprints(project_id):
     pid = project_id
@@ -133,6 +130,7 @@ def get_sprints(project_id):
     if len(project_sprints) == 0:
         return redirect(url_for('add_sprint'))
     return render_template('app/sprints.html', sprints=project_sprints)
+
    
 
 
