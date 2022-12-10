@@ -1,7 +1,7 @@
 {% extends 'app/layout/default.html' %}
 {% block title %}Projects{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/default.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/project.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,8 @@
               <th>Date Created</th>
               <th>Project Author</th>
               <th></th>
-              <th> </th>
+              <th></th>
+           
             </tr>
 
             <tr>
@@ -25,9 +26,36 @@
                 <td>{{ project.created_at.strftime('%Y-%m-%d') }}</td>
                 <td>{{ project.created_by.first_name }}</td>
                 <td><button onclick="window.location.href='{{url_for('edit_project', project_id=project.id)}}'" type="submit">Edit Project</button></td>
-                <td><button onclick="window.location.href='{{url_for('edit_project', project_id=project.id)}}'" type="submit">Sprints</button></td>
+                <td><button class="open-button" onclick="openForm()">Add Sprint</button></td>
+                
             </tr>
         </table>   
+
+        
+
+<div class="form-popup" id="myForm">
+  <form action="/action_page.php" class="form-container">
+    <h1>Add Sprint</h1>
+
+    <label for="name"><b>Sprint Name</b></label>
+    <input type="text" placeholder="" name="name" required>
+
+
+    <button type="submit" class="btn">Confirm</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
     </div>
 </div>
 
