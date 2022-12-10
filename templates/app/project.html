@@ -25,7 +25,7 @@
                 <td>{{ project.comment }}</td>
                 <td>{{ project.created_at.strftime('%Y-%m-%d') }}</td>
                 <td>{{ project.created_by.first_name }}</td>
-                <td><button onclick="window.location.href='{{url_for('edit_project', project_id=project.id)}}'" type="submit">Edit Project</button></td>
+                <td><button class="open-button" onclick="window.location.href='{{url_for('edit_project', project_id=project.id)}}'" type="submit">Edit Project</button></td>
                 <td><button class="open-button" onclick="openForm()">Add Sprint</button></td>
                 
             </tr>
@@ -34,7 +34,7 @@
         
 
 <div class="form-popup" id="myForm">
-  <form action="/action_page.php" class="form-container">
+    <form method="POST" action="{{ url_for('add_sprint') }}"class="form-container">
     <h1>Add Sprint</h1>
 
     <label for="name"><b>Sprint Name</b></label>
