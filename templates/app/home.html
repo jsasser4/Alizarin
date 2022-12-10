@@ -1,4 +1,11 @@
+{% extends 'app/layout/default.html' %}
+{% block title %}Home{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/home.css') }}">
+{% endblock %}
 
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,14 +14,11 @@
         <meta name="description" content="ALIZARIN">
         <title>Sprints</title>
         <!-- styles -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='sprints.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     </head>
     <body>
         <div class="container">
-            <div class="header">
-                Header!
-            </div>
-
+            
             <div class="footer">
                 Footer
             </div>
@@ -30,3 +34,5 @@
         </div>
     </body>
 </html>
+
+{% endblock %}

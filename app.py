@@ -121,6 +121,9 @@ def get_projects():
         return redirect(url_for('add_project'))
     return render_template('app/projects.html', projects=user_projects)
 
+@app.route('/home')
+def view_home():
+    return render_template('app/home.html')
 
 @app.route('/sprints/<project_id>', methods=['GET'])
 def get_sprints(project_id):
@@ -130,8 +133,6 @@ def get_sprints(project_id):
     if len(project_sprints) == 0:
         return redirect(url_for('add_sprint'))
     return render_template('app/sprints.html', sprints=project_sprints)
-
-   
 
 
 @app.route('/register', methods=['POST', 'GET'])

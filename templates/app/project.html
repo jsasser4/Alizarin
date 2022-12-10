@@ -1,18 +1,19 @@
 {% extends 'app/layout/default.html' %}
 {% block title %}Projects{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/project.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/default.css') }}">
 {% endblock %}
 
 {% block content %}
 
 <div class="card">
     <div class="padding">
+        <h2>Project Details</h2>
         <table>
             <tr>
-              <th>Project name</th>
-              <th>Project information</th>
-              <th>date created</th>
+              <th>Project Name</th>
+              <th>Project Information</th>
+              <th>Date Created</th>
               <th>Project Author</th>
               <th></th>
               <th> </th>
