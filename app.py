@@ -21,8 +21,23 @@ with app.app_context():
 
 @app.route('/')
 @app.route('/index')
+@app.route('/login')
 def index():
-    return redirect(url_for('login'))
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        the_user = db.session.query(User).filter_by(email=request.form['email']).one()
+        if checkpw(request.form['password'].encode('utf-8'), the_user.password_hash):
+            session['user'] = the_user.first_name
+            session['user_id'] = the_user.id
+            return redirect(url_for('home'))
+        login_form.password.errors = ["Incorrect username or password."]
+        return render_template("app/login.html", form=login_form)
+    else:
+        return render_template("app/login.html", form=login_form)
+
+@app.route('/home', methods=['POST', 'GET'])
+def home():
+    return render_template("app/home.html")
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -44,20 +59,6 @@ def register():
         return redirect(url_for('get_projects'))
     return render_template('app/register.html', form=form)
 
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        the_user = db.session.query(User).filter_by(email=request.form['email']).one()
-        if checkpw(request.form['password'].encode('utf-8'), the_user.password_hash):
-            session['user'] = the_user.first_name
-            session['user_id'] = the_user.id
-            return redirect(url_for('get_projects'))
-        login_form.password.errors = ["Incorrect username or password."]
-        return render_template("app/login.html", form=login_form)
-    else:
-        return render_template("app/login.html", form=login_form)
 
 
 @app.route('/logout')
