@@ -2,6 +2,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  background: url("/static/image/background.jpg") center no-repeat;
+  background-size: cover;
 }
 
 ul.errors {
@@ -16,18 +18,17 @@ ul.errors li {
 }
 
 #sign-in-row {
-  border: #3e75be solid 4px;
   border-radius: 10px;
   background-color: white;
 }
 
 #sign-in-header {
-  color: #3e75be;
+  color: navy;
   font-weight: 600;
 }
 
 #register-in-header {
-  color: #3e75be;
+  color: navy;
   font-weight: 600;
   text-decoration-line: underline;
   text-decoration-thickness: 2px;
