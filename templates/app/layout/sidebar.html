@@ -6,14 +6,19 @@
                     <i class="fa-solid fa-otter fa-2x icon"></i>
                     <span>Alizarin</span>
                 </h2>
-                <ul class="sidebar-items nav-links list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
+                <ul class="sidebar-items nav-links list-unstyled">
                     <li class="sidebar-group">
-                        <form class="sidebar-create">
-                            <input type="text" class="form-control" placeholder="Create new project" aria-label="Create a project" spellcheck="false" autocomplete="off"/>
-                        </form>
+                        <div class="d-block">
+                            <form class="sidebar-create">
+                                <div class="input-group">
+                                     <input type="text" class="form-control" placeholder="Create new project" aria-label="Create a project" spellcheck="false" autocomplete="off"/>
+                                     <button type="submit" class="btn btn-default"><i class="fa-solid fa-folder-plus fa"></i></button>
+                                </div>
+                            </form>
+                        </div>
                     </li>
                     <li class="sidebar-group">
-                        <button class="btn d-inline-flex align-items-center rounded w-100" data-bs-toggle="collapse" data-bs-target="#projects-collapse" aria-expanded="true">
+                        <button class="btn expand d-inline-flex align-items-center rounded w-100" data-bs-toggle="collapse" data-bs-target="#projects-collapse" aria-expanded="true">
                             Projects
                         </button>
                         <div id="projects-collapse" class="collapse">
