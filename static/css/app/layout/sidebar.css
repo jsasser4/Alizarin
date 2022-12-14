@@ -13,6 +13,7 @@
 
 .sidebar-title {
     margin: .5rem;
+    color: rgb(0, 0, 77)
 }
 
 .sidebar-items {
@@ -22,6 +23,7 @@
 .icon {
     vertical-align: middle;
     font-size: 64px;
+    color: rgb(0, 0, 77)
 }
 
 .sidebar .btn::before {
@@ -47,13 +49,13 @@
 }
 
 .sidebar .btn:focus {
-    box-shadow: 0 0 0 1px rgba(121,82,179,0.7);
+    box-shadow: 0 0 0 1px lightblue;
 }
 
 .sidebar .btn:hover,
 .sidebar .btn:focus {
     color: rgba(0,0,0,0.85);
-    background-color: rgba(121,82,179,0.1);
+    background-color: lightblue;
 }
 
 .sidebar .active {
@@ -71,5 +73,5 @@
 .sidebar a:hover,
 .sidebar a:focus {
     color: rgba(0,0,0,0.85);
-    background-color: rgba(121,82,179,0.1);
+    background-color: lightblue;
 }
