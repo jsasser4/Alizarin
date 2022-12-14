@@ -8,17 +8,68 @@
 .sidebar {
     position: sticky;
     display: block !important;
-    padding-left: .25rem;
-    margin-left: -.25rem;
     overflow-y: auto;
 }
 
-
-.title {
+.sidebar-title {
     margin: .5rem;
+}
+
+.sidebar-items {
+    padding: 1rem;
 }
 
 .icon {
     vertical-align: middle;
     font-size: 64px;
+}
+
+.sidebar .btn::before {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    transition: transform 0.35s ease;
+    transform-origin: .5em 50%;
+}
+
+.sidebar .btn[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+}
+
+.sidebar .btn {
+    padding: .25rem .5rem;
+    font-weight: 600;
+    border: 0;
+}
+
+.sidebar .btn[aria-expanded="true"] {
+    color: rgba(0,0,0,0.85);
+}
+
+.sidebar .btn:focus {
+    box-shadow: 0 0 0 1px rgba(121,82,179,0.7);
+}
+
+.sidebar .btn:hover,
+.sidebar .btn:focus {
+    color: rgba(0,0,0,0.85);
+    background-color: rgba(121,82,179,0.1);
+}
+
+.sidebar .active {
+    font-weight: 600;
+    color: rgba(0,0,0,0.85);
+}
+.sidebar a {
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    margin-left: 1.25rem;
+    color: rgba(0,0,0,0.65);
+    text-decoration: none;
+}
+
+.sidebar a:hover,
+.sidebar a:focus {
+    color: rgba(0,0,0,0.85);
+    background-color: rgba(121,82,179,0.1);
 }
