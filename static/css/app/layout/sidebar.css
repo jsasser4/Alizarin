@@ -5,6 +5,7 @@
     grid-column-end: sidebar;
 }
 
+
 .sidebar {
     position: sticky;
     display: block !important;
@@ -16,8 +17,10 @@
 }
 
 .sidebar-title {
-    margin: .5rem;
-    color: rgb(0, 0, 77)
+    margin: 1rem;
+    padding: 8px;
+    color: rgb(0, 0, 77);
+    border-bottom: solid 2px rgb(0, 0, 77);
 }
 
 .sidebar-items {
