@@ -1,0 +1,24 @@
+.sidebar {
+    grid-row-start: sidebar;
+    grid-row-end: sidebar;
+    grid-column-start: sidebar;
+    grid-column-end: sidebar;
+}
+
+.sidebar {
+    position: sticky;
+    display: block !important;
+    padding-left: .25rem;
+    margin-left: -.25rem;
+    overflow-y: auto;
+}
+
+
+.title {
+    margin: .5rem;
+}
+
+.icon {
+    vertical-align: middle;
+    font-size: 64px;
+}

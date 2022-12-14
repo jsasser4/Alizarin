@@ -1,0 +1,9 @@
+.layout {
+    display: grid;
+    grid-template-areas: "sidebar main";
+    grid-template-columns: 1fr 5fr;
+    gap: 1.5rem;
+    margin: 1.5rem !important;
+}
+
+
