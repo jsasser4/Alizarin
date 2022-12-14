@@ -10,6 +10,7 @@
     display: block !important;
     overflow-y: auto;
 }
+
 .sidebar-title {
     margin: 1rem;
     padding: 8px;
@@ -19,6 +20,13 @@
 
 .sidebar-items {
     padding: .5rem 1rem;
+}
+
+.sidebar-items .last {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 16px;
 }
 
 .icon {
@@ -37,6 +45,11 @@
     content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
     transition: transform 0.35s ease;
     transform-origin: .5em 50%;
+}
+
+.seperator {
+    margin-top: 5rem;
+    border-top: solid 1px black;
 }
 
 .sidebar .expand[aria-expanded="true"]::before {
@@ -67,7 +80,7 @@
     font-weight: 600;
     color: rgba(0,0,0,0.85);
 }
-.sidebar a {
+.list-item {
     padding: .1875rem .5rem;
     margin-top: .125rem;
     margin-left: 1.25rem;
@@ -75,8 +88,8 @@
     text-decoration: none;
 }
 
-.sidebar a:hover,
-.sidebar a:focus {
+.list-item:hover,
+.list-item:focus {
     color: rgba(0,0,0,0.85);
     background-color: lightgoldenrodyellow;
 }
