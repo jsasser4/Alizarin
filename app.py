@@ -56,26 +56,39 @@ def login():
         return render_template("app/login.html", form=login_form)
 
 
+
+
 @app.route('/project', methods=['POST', 'GET'])
 @app.route('/project/<project_id>', methods=['POST', 'GET'])
 def project(project_id=None):
     sort_fn = lambda sprint: sprint.name
+    next_sort = 'date'
+    reverse = False
     if 'sort' in request.args and request.args.get('sort') == 'date':
         sort_fn = lambda sprint: sprint.created_at
+        reverse = True
+        next_sort = 'alpha'
+    if 'sort' in request.args and request.args.get('sort') == 'alpha':
+        sort_fn = lambda sprint: sprint.name
+        reverse = False
+        next_sort = 'date'
 
     user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
     active_project = None
     is_owner = False
     if project_id is not None:
         active_project = db.session.query(Project).filter_by(project_id=project_id).one()
-        active_project.sprints.sort(key=sort_fn)
+        active_project.sprints.sort(key=sort_fn, reverse=reverse)
         is_owner = (active_project.created_by.user_id == user.user_id)
     elif len(user.projects) != 0:
         return redirect(url_for('project', project_id=user.projects[0].project_id))
     project_form = ProjectForm()
     sprint_form = SprintForm()
     task_form = TaskForm()
-    return render_template("app/project.html", project_form=project_form, sprint_form=sprint_form, task_form=task_form,
+    return render_template("app/project.html", next_sort=next_sort,
+                           project_form=project_form,
+                           sprint_form=sprint_form,
+                           task_form=task_form,
                            projects=user.projects, active_project=active_project, is_owner=is_owner)
 
 
