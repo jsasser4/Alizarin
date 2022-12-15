@@ -13,4 +13,3 @@ class Story(db.Model):
     def __int__(self, name, text):
         self.name = name
         self.text = text
-        self.created_at = datetime.now()

@@ -9,14 +9,14 @@ class Task(db.Model):
     task_id: int = db.Column(Integer, primary_key=True)
     name: str = db.Column(String(128))
     description: str = db.Column(String(512))
-
-    is_completed: bool = db.Column(Boolean())
+    sprint_id = db.Column(db.Integer, db.ForeignKey("sprints.sprint_id"))
+    sprint = db.relationship("Sprint", back_populates="tasks")
+    is_completed: bool = db.Column(db.Boolean())
     created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
-
     __tablename__ = "tasks"
 
-    def __init__(self, name, description, project: Project, sprint: Sprint):
+    def __init__(self, name, description, sprint: Sprint):
         self.name = name
         self.description = description
+        self.sprint = sprint
         self.is_completed = False
-        self.created_at = datetime.now()

@@ -9,10 +9,9 @@ class Sprint(db.Model):
     name: str = db.Column(db.String(256))
     project_id = db.Column(db.Integer, db.ForeignKey("projects.project_id"))
     project = db.relationship("Project", back_populates="sprints")
-
+    tasks = db.relationship("Task", back_populates="sprint")
     created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 
     def __int__(self, name: str, project: Project):
         self.name = name
         self.project_id = project
-        self.created_at = datetime.now()

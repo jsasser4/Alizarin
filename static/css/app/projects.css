@@ -1,5 +1,6 @@
 [contenteditable][placeholder]:empty:before {
-    content: attr(placeholder);
+    white-space: pre;
+    content: attr(placeholder) "\n";
     position: absolute;
     color: gray;
     background-color: transparent;

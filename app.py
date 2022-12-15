@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Flask, url_for, request, session, redirect
 from flask import render_template
 from bcrypt import hashpw, gensalt, checkpw
-
+from re import compile, sub
 from src.form import RegisterForm, LoginForm, ProjectForm, SprintForm, TaskForm
 from src import db
 from src.model.project import Project
@@ -93,27 +93,42 @@ def sprint_add(project_id: int):
         db.session.add(sprint)
         db.session.commit()
         return redirect(url_for('project', project_id=project_id))
-    return redirect(url_for('project'))
+    return redirect(url_for('project', project_id=project_id))
 
+@app.route('/sprint/delete/<project_id>/<sprint_id>', methods=['POST', 'GET'])
+def sprint_delete(project_id, sprint_id):
+    sprint = db.session.query(Sprint).filter_by(sprint_id=sprint_id).one()
+    if sprint is not None:
+        db.session.delete(sprint)
+        db.session.commit()
+    return redirect(url_for('project', project_id=project_id))
 
 @app.route('/task/add/<project_id>/<sprint_id>', methods=['POST', 'GET'])
 def task_add(project_id, sprint_id):
     task_form = TaskForm()
+    desc_filter = compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+    cleantext = sub(desc_filter, '', request.form['description'])
+
     if task_form.validate_on_submit():
-        p = db.session.query(Project).filter_by(project_id=project_id).one()
         s = db.session.query(Sprint).filter_by(sprint_id=sprint_id).one()
-        task = Task(name=task_form.name, description=task_form.description, project=p, sprint=s)
+        task = Task(name=request.form['name'], description=cleantext, sprint=s)
         db.session.add(task)
         db.session.commit()
-        return redirect(url_for('project'))
-    return redirect(url_for('project'))
+        return redirect(url_for('project', project_id=project_id))
+    return redirect(url_for('project', project_id=project_id))
 
+@app.route('/task/delete/<project_id>/<task_id>', methods=['POST', 'GET'])
+def task_delete(project_id, task_id):
+    task = db.session.query(Task).filter_by(task_id=task_id).one()
+    if task is not None:
+        db.session.delete(task)
+        db.session.commit()
+    return redirect(url_for('project', project_id=project_id))
 
 @app.route('/story/<project_id>', methods=['POST', 'GET'])
 def story(project_id):
     user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
     stories = db.session.query(Story).filter_by(project_id=project_id).all()
-
     project_form = ProjectForm()
     return render_template("app/story.html", stories=stories, project_form=project_form, projects=user.projects)
 

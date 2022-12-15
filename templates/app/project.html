@@ -13,78 +13,75 @@
 {% block header %}Dashboard{% endblock %}
 
 {% block content %}
-{% if active_project is not none %}
-    {% for sprint in active_project.sprints %}
-        <div class="card m-3">
-            <div class="card-header">
-                {{ sprint.name }} - {{ sprint.created_at|strftime }}
+    {% if active_project is not none %}
+        <div class="row m-3">
+            <div class="col-8">
+                <h3>Project - {{ active_project.name }}</h3>
             </div>
-            <div class="card-body">
-                <div class="row align-items-stretch">
-                    <div class="col-2 py-2">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Task Name
-                                    <a class="btn btn-close float-end mb-1" role="button" aria-label="Close"></a>
-                                </h5>
-                                <p class="card-text">Test</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 py-2">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">Task Name
-                                    <a class="btn btn-close float-end mb-1" role="button" aria-label="Close"></a>
-                                </h5>
-                                <p class="card-text">Test</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2 py-2">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <form class="form-inline" id="task-add" name="taskadd"
-                                      action="{{ url_for("task_add", project_id=1, sprint_id=1) }}" method=post>
-                                    <h5 class="card-title">
-                                        {{ task_form.name(class_="form-control form-control-sm", placeholder_="Task Name") }}
-                                    </h5>
-                                    <div class="card-text">
-                                        <div id="editable-description" contenteditable="true" class="form-control"
-                                             aria-multiline="true" placeholder="Description"></div>
+        </div>
+        {% for sprint in active_project.sprints %}
+            <div class="card m-3">
+                <div class="card-header">
+                    {{ sprint.name }} - {{ sprint.created_at|strftime }}
+                    <a href="{{ url_for('sprint_delete', project_id=active_project.project_id, sprint_id=sprint.sprint_id) }}"
+                       class="btn btn-close float-end mb-1" role="button"
+                       aria-label="Close"></a>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-stretch">
+                        {% for task in sprint.tasks %}
+                            <div class="col-2 py-2">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ task.name }}
+                                            <a href="{{ url_for('task_delete', project_id=active_project.project_id, task_id=task.task_id) }}"
+                                               class="btn btn-close float-end mb-1" role="button"
+                                               aria-label="Close"></a>
+                                        </h5>
+                                        <p class="card-text">{{ task.description }}</p>
                                     </div>
-                                    {{ task_form.description(class_="d-none") }}
-                                </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="col-2 py-2">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <form class="form-inline" id="task-add" name="taskadd"
+                                          action="{{ url_for("task_add", project_id=active_project.project_id, sprint_id=sprint.sprint_id) }}"
+                                          method=post>
+                                        <h5 class="card-title">
+                                            {{ task_form.name(class_="form-control form-control-sm", placeholder_="Task Name") }}
+                                        </h5>
+                                        <div class="card-text">
+                                            <div id="editable-description" contenteditable="true"
+                                                 class="form-control d-inline-block"
+                                                 aria-multiline="true" placeholder="Description"></div>
+                                        </div>
+                                        {{ task_form.description(class_="d-none") }}
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% endfor %}
-    <div class="card m-3">
-        <div class="card-header">
-            <form id="sprint-add" name="sprintadd" action="{{ url_for("sprint_add", project_id=active_project.project_id) }}" method=post
-                  class="d-block">
-                <div class="input-group">
+        {% endfor %}
+        <div class="row m-3">
+            <div class="w-100 p-0 m-0">
+                <form id="sprint-add" name="sprintadd"
+                      action="{{ url_for("sprint_add", project_id=active_project.project_id) }}" method=post>
                     {{ sprint_form.name(class_="form-control", placeholder_="Create a new sprint") }}
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
-                            <i class="fa-regular fa-calendar-plus"></i>
-                        </button>
-                    </span>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-{% else %}
-    <div class="card m-3">
-        <div class="card-header">No Active Projects</div>
-        <div class="card-body">
-            <p class="card-text">
-                Create a project using the sidebar to the right.
-            </p>
+    {% else %}
+        <div class="card m-3">
+            <div class="card-header">No Active Projects</div>
+            <div class="card-body">
+                <p class="card-text">
+                    Create a project using the sidebar to the right.
+                </p>
+            </div>
         </div>
-    </div>
-{% endif %}
+    {% endif %}
 {% endblock %}
