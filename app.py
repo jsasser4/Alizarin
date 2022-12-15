@@ -9,6 +9,7 @@ from src.model.project import Project
 from src.model.sprint import Sprint
 from src.model.task import Task
 from src.model.user import User
+from src.model.story import Story
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
@@ -40,6 +41,7 @@ def login():
             session['user_id'] = the_user.user_id
             return redirect(url_for('project'))
         login_form.password.errors = ["Incorrect username or password."]
+        
         return render_template("app/login.html", form=login_form)
     else:
         return render_template("app/login.html", form=login_form)
@@ -101,6 +103,16 @@ def task_add(project_id, sprint_id):
         db.session.commit()
         return redirect(url_for('project'))
     return redirect(url_for('project'))
+
+
+@app.route('/story/<project_id>', methods=['POST', 'GET'])
+def story(project_id):
+    user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
+    Story = db.session.query(Story).filter_by(project_id=8)
+    project_form = ProjectForm()
+    return render_template("app/story.html",
+                           project_form=project_form,
+                           projects=user.projects)
 
 
 @app.route('/register', methods=['POST', 'GET'])
