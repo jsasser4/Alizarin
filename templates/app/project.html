@@ -57,7 +57,7 @@
                                           action="{{ url_for("task_add", project_id=active_project.project_id, sprint_id=sprint.sprint_id) }}"
                                           method=post>
                                         <h5 class="card-title">
-                                            {{ task_form.name(class_="form-control form-control-sm", placeholder_="Task Name") }}
+                                            {{ task_form.name(class_="form-control form-control-sm", placeholder_="Task name") }}
                                         </h5>
                                         <div class="card-text">
                                             <div id="editable-description" contenteditable="true"
