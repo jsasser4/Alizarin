@@ -10,8 +10,7 @@ class LoginAttempt(db.Model):
     password_hash: str = db.Column(String(256))
     created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 
-    def __int__(self, name, email, password_hash):
-        self.name = name
+    def __int__(self, email, password_hash):
         self.email = email
         self.password_hash = password_hash
         self.created_at = datetime.now()

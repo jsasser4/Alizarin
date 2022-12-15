@@ -9,20 +9,19 @@ from src.model.project import Project
 from src.model.sprint import Sprint
 from src.model.task import Task
 from src.model.user import User
+from src.model.story import Story
+from src.model.login_attempt import LoginAttempt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config.from_mapping(
-    SECRET_KEY=b'\xd6\x04\xbdj\xfe\xed$c\x1e@\xad\x0f\x13,@G')
+app.config.from_mapping(SECRET_KEY=b'\xd6\x04\xbdj\xfe\xed$c\x1e@\xad\x0f\x13,@G')
 db.init_app(app)
 
 
 @app.template_filter()
 def strftime(value, fmt="%H:%M %d-%m-%y"):
     return value.strftime(fmt)
-
-
 
 with app.app_context():
     db.create_all()
@@ -47,6 +46,9 @@ def login():
             session['user_id'] = the_user.user_id
             return redirect(url_for('project'))
         login_form.password.errors = ["Incorrect username or password."]
+        new_login_attempt = LoginAttempt(email=request.form['email'], password=request.form['password'].encode('utf-8'))
+        db.session.add(new_login_attempt)
+        db.session.commit()
         return render_template("app/login.html", form=login_form)
     else:
         return render_template("app/login.html", form=login_form)
@@ -65,12 +67,8 @@ def project(project_id=None):
     project_form = ProjectForm()
     sprint_form = SprintForm()
     task_form = TaskForm()
-    return render_template("app/project.html",
-                           project_form=project_form,
-                           sprint_form=sprint_form,
-                           task_form=task_form,
-                           projects=user.projects,
-                           active_project=active_project)
+    return render_template("app/project.html", project_form=project_form, sprint_form=sprint_form, task_form=task_form,
+                           projects=user.projects, active_project=active_project)
 
 
 @app.route('/project/add', methods=['POST', 'GET'])
@@ -94,7 +92,7 @@ def sprint_add(project_id: int):
         sprint: Sprint = Sprint(name=request.form['name'], project=p)
         db.session.add(sprint)
         db.session.commit()
-        return redirect(url_for('project'))
+        return redirect(url_for('project', project_id=project_id))
     return redirect(url_for('project'))
 
 
@@ -102,26 +100,32 @@ def sprint_add(project_id: int):
 def task_add(project_id, sprint_id):
     task_form = TaskForm()
     if task_form.validate_on_submit():
-        project = db.session.query(Project).filter_by(project_id=project_id).one()
-        sprint = db.session.query(Sprint).filter_by(sprint_id=sprint_id).one()
-        task = Task(name=task_form.name, description=task_form.description, project=project, sprint=sprint)
+        p = db.session.query(Project).filter_by(project_id=project_id).one()
+        s = db.session.query(Sprint).filter_by(sprint_id=sprint_id).one()
+        task = Task(name=task_form.name, description=task_form.description, project=p, sprint=s)
         db.session.add(task)
         db.session.commit()
         return redirect(url_for('project'))
     return redirect(url_for('project'))
 
 
+@app.route('/story/<project_id>', methods=['POST', 'GET'])
+def story(project_id):
+    user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
+    stories = db.session.query(Story).filter_by(project_id=project_id).all()
+
+    project_form = ProjectForm()
+    return render_template("app/story.html", stories=stories, project_form=project_form, projects=user.projects)
+
+
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     form = RegisterForm()
     if request.method == 'POST' and form.validate_on_submit():
-        h_password = hashpw(
-            request.form['password'].encode('utf-8'), gensalt())
+        h_password = hashpw(request.form['password'].encode('utf-8'), gensalt())
         first_name = request.form['firstname']
         last_name = request.form['lastname']
-        new_user = User(first_name=first_name,
-                        last_name=last_name,
-                        email=request.form['email'],
+        new_user = User(first_name=first_name, last_name=last_name, email=request.form['email'],
                         password_hash=h_password)
         db.session.add(new_user)
         db.session.commit()

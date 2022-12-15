@@ -64,7 +64,7 @@
     {% endfor %}
     <div class="card m-3">
         <div class="card-header">
-            <form id="sprint-add" name="sprintadd" action="{{ url_for("sprint_add", project_id=1) }}" method=post
+            <form id="sprint-add" name="sprintadd" action="{{ url_for("sprint_add", project_id=active_project.project_id) }}" method=post
                   class="d-block">
                 <div class="input-group">
                     {{ sprint_form.name(class_="form-control", placeholder_="Create a new sprint") }}
@@ -79,10 +79,10 @@
     </div>
 {% else %}
     <div class="card m-3">
-        <div class="card-header">No Active Projects!</div>
+        <div class="card-header">No Active Projects</div>
         <div class="card-body">
             <p class="card-text">
-                Make a Project by using the sidebar to the right!
+                Create a project using the sidebar to the right.
             </p>
         </div>
     </div>
