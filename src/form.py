@@ -67,3 +67,17 @@ class TaskForm(FlaskForm):
     name = StringField('Task Name', validators=[Length(1, 32)])
     description = TextAreaField('Sprint Description', validators=[Length(1, 1024)])
     submit = SubmitField('Add task to Sprint')
+
+
+class UserForm(FlaskForm):
+    class Meta:
+        csrf = False
+    email = StringField('Email', [Email(message='Not a valid email address.'), DataRequired()])
+    submit = SubmitField('Add Project User')
+
+
+class UserStory(FlaskForm):
+    class Meta:
+        csrf = False
+    content = TextAreaField('Story Content', validators=[Length(1, 1024)])
+    submit = SubmitField('Create Project Story')

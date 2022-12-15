@@ -13,6 +13,7 @@ class Project(db.Model):
     created_by = db.relationship('User')
 
     sprints = db.relationship("Sprint", back_populates="project")
+    stories = db.relationship("Story", back_populates="project")
 
     created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 

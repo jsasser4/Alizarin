@@ -15,8 +15,15 @@
 {% block content %}
     {% if active_project is not none %}
         <div class="row m-3">
-            <div class="col-8">
-                <h3>Project - {{ active_project.name }}</h3>
+            <div class="col-12">
+                <h3>Project - {{ active_project.name }}
+                    <a href="{{ url_for('project', project_id=active_project.project_id, sort="date") }}"
+                       class="btn float-end mb-2 mt-0 p-0 fs-4"  role="button"
+                       aria-label="Shuffle">Sort By Date
+                        <i class="fa-solid fa-shuffle"></i>
+                    </a>
+                </h3>
+
             </div>
         </div>
         {% for sprint in active_project.sprints %}

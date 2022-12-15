@@ -3,7 +3,7 @@ from flask import Flask, url_for, request, session, redirect
 from flask import render_template
 from bcrypt import hashpw, gensalt, checkpw
 from re import compile, sub
-from src.form import RegisterForm, LoginForm, ProjectForm, SprintForm, TaskForm
+from src.form import RegisterForm, LoginForm, ProjectForm, SprintForm, TaskForm, UserForm, UserStory
 from src import db
 from src.model.project import Project
 from src.model.sprint import Sprint
@@ -11,6 +11,7 @@ from src.model.task import Task
 from src.model.user import User
 from src.model.story import Story
 from src.model.login_attempt import LoginAttempt
+from sqlalchemy import asc, desc
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
@@ -22,6 +23,7 @@ db.init_app(app)
 @app.template_filter()
 def strftime(value, fmt="%H:%M %d-%m-%y"):
     return value.strftime(fmt)
+
 
 with app.app_context():
     db.create_all()
@@ -57,18 +59,24 @@ def login():
 @app.route('/project', methods=['POST', 'GET'])
 @app.route('/project/<project_id>', methods=['POST', 'GET'])
 def project(project_id=None):
+    sort_fn = lambda sprint: sprint.name
+    if 'sort' in request.args and request.args.get('sort') == 'date':
+        sort_fn = lambda sprint: sprint.created_at
+
     user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
     active_project = None
+    is_owner = False
     if project_id is not None:
         active_project = db.session.query(Project).filter_by(project_id=project_id).one()
+        active_project.sprints.sort(key=sort_fn)
+        is_owner = (active_project.created_by.user_id == user.user_id)
     elif len(user.projects) != 0:
         return redirect(url_for('project', project_id=user.projects[0].project_id))
-
     project_form = ProjectForm()
     sprint_form = SprintForm()
     task_form = TaskForm()
     return render_template("app/project.html", project_form=project_form, sprint_form=sprint_form, task_form=task_form,
-                           projects=user.projects, active_project=active_project)
+                           projects=user.projects, active_project=active_project, is_owner=is_owner)
 
 
 @app.route('/project/add', methods=['POST', 'GET'])
@@ -95,6 +103,7 @@ def sprint_add(project_id: int):
         return redirect(url_for('project', project_id=project_id))
     return redirect(url_for('project', project_id=project_id))
 
+
 @app.route('/sprint/delete/<project_id>/<sprint_id>', methods=['POST', 'GET'])
 def sprint_delete(project_id, sprint_id):
     sprint = db.session.query(Sprint).filter_by(sprint_id=sprint_id).one()
@@ -102,6 +111,7 @@ def sprint_delete(project_id, sprint_id):
         db.session.delete(sprint)
         db.session.commit()
     return redirect(url_for('project', project_id=project_id))
+
 
 @app.route('/task/add/<project_id>/<sprint_id>', methods=['POST', 'GET'])
 def task_add(project_id, sprint_id):
@@ -117,6 +127,7 @@ def task_add(project_id, sprint_id):
         return redirect(url_for('project', project_id=project_id))
     return redirect(url_for('project', project_id=project_id))
 
+
 @app.route('/task/delete/<project_id>/<task_id>', methods=['POST', 'GET'])
 def task_delete(project_id, task_id):
     task = db.session.query(Task).filter_by(task_id=task_id).one()
@@ -125,12 +136,81 @@ def task_delete(project_id, task_id):
         db.session.commit()
     return redirect(url_for('project', project_id=project_id))
 
+
 @app.route('/story/<project_id>', methods=['POST', 'GET'])
 def story(project_id):
-    user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
-    stories = db.session.query(Story).filter_by(project_id=project_id).all()
     project_form = ProjectForm()
-    return render_template("app/story.html", stories=stories, project_form=project_form, projects=user.projects)
+    user_story = UserStory()
+    user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
+    active_project = db.session.query(Project).filter_by(project_id=project_id).one()
+    is_owner = (active_project.created_by.user_id is user.user_id)
+
+    return render_template("app/story.html",
+                           is_owner=is_owner,
+                           project_form=project_form,
+                           user_story=user_story,
+                           active_project=active_project,
+                           projects=user.projects)
+
+
+@app.route('/story/add/<project_id>', methods=['POST', 'GET'])
+def story_add(project_id):
+    user_story = UserStory()
+    active_project = db.session.query(Project).filter_by(project_id=project_id).one()
+
+    if user_story.validate_on_submit():
+        new_story = Story(content=request.form['content'])
+        db.session.add(new_story)
+        db.session.commit()
+        active_project.stories.append(new_story)
+        db.session.commit()
+    return redirect(url_for('story', project_id=project_id))
+
+
+@app.route('/story/delete/<project_id>/<story_id>', methods=['GET'])
+def story_delete(project_id, story_id):
+    s = db.session.query(Story).filter_by(story_id=story_id).one()
+    p = db.session.query(Project).filter_by(project_id=project_id).one()
+    p.stories.remove(s)
+    db.session.commit()
+    return redirect(url_for('story', project_id=project_id))
+
+
+@app.route('/users/<project_id>', methods=['POST', 'GET'])
+def users(project_id):
+    project_form = ProjectForm()
+    user_form = UserForm()
+    user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
+    active_project = db.session.query(Project).filter_by(project_id=project_id).one()
+    is_owner = (active_project.created_by.user_id is user.user_id)
+    if not is_owner:
+        return redirect(url_for('project'))
+    return render_template("app/users.html",
+                           is_owner=is_owner,
+                           project_form=project_form,
+                           user_form=user_form,
+                           active_project=active_project,
+                           projects=user.projects)
+
+
+@app.route('/users/add/<project_id>', methods=['GET', 'POST'])
+def user_add(project_id):
+    user_form = UserForm()
+    p = db.session.query(Project).filter_by(project_id=project_id).one()
+    if user_form.validate_on_submit():
+        new_user = db.session.query(User).filter_by(email=request.form['email']).one()
+        p.users.append(new_user)
+        db.session.commit()
+    return redirect(url_for('project', project_id=project_id))
+
+
+@app.route('/users/delete/<project_id>/<user_id>', methods=['GET'])
+def user_remove(project_id, user_id):
+    p = db.session.query(Project).filter_by(project_id=project_id).one()
+    u = db.session.query(User).filter_by(user_id=user_id).one()
+    p.users.remove(u)
+    db.session.commit()
+    return redirect(url_for('project', project_id=project_id))
 
 
 @app.route('/register', methods=['POST', 'GET'])

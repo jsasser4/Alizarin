@@ -4,12 +4,14 @@ from src import db
 
 
 class Story(db.Model):
-    __tablename__ = "story"
-    id: int = db.Column(Integer, primary_key=True)
-    name: str = db.Column(String(128))
-    text: str = db.Column(String(2048))
+    __tablename__ = "stories"
+    story_id: int = db.Column(db.Integer, primary_key=True)
+    content: str = db.Column(db.String(2048))
+    project_id = db.Column(db.Integer, db.ForeignKey("projects.project_id"))
+    project = db.relationship("Project", back_populates="stories")
+
     created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 
-    def __int__(self, name, text):
-        self.name = name
-        self.text = text
+    def __int__(self, content, project):
+        self.content = content
+        self.project = project
