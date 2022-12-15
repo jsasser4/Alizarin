@@ -1,6 +1,6 @@
 {% extends 'app/layout/default.html' %}
 
-{% block title %}Manage Users{% endblock %}
+{% block title %}Manage users{% endblock %}
 
 {% block scripts %}
     <script src="{{ url_for('static', filename='js/app/projects.js') }}"></script>
@@ -10,20 +10,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app/projects.css') }}">
 {% endblock %}
 
-{% block header %}Manage Users{% endblock %}
+{% block header %}Manage users{% endblock %}
 
 {% block content %}
     <div class="card">
         <div class="card-header">
-            Manage Project Users
+            Manage project users
         </div>
         <div class="card-body">
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">User ID</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Remove</th>
                 </tr>

@@ -1,6 +1,6 @@
 {% extends 'app/layout/default.html' %}
 
-{% block title %}Manage Users{% endblock %}
+{% block title %}User stories{% endblock %}
 
 {% block scripts %}
     <script src="{{ url_for('static', filename='js/app/projects.js') }}"></script>
@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app/projects.css') }}">
 {% endblock %}
 
-{% block header %}Manage Users{% endblock %}
+{% block header %}User stories{% endblock %}
 
 {% block content %}
     {% if active_project.stories|length > 0 %}
         <div class="row mt-3 mb-3">
             <div class="col-8">
-                <h3>User Stories - {{ active_project.name }}</h3>
+                <h3>User stories - {{ active_project.name }}</h3>
             </div>
         </div>
 
