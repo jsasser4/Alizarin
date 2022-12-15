@@ -29,7 +29,6 @@ def index():
     else:
         return redirect(url_for('login'))
 
-
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     login_form = LoginForm()
@@ -52,7 +51,7 @@ def project(project_id=None):
     if project_id is not None:
         active_project = db.session.query(Project).filter_by(project_id=project_id).one()
     elif len(user.projects) != 0:
-        active_project = user.projects[0]
+        return redirect(url_for('project', project_id=user.projects[0].project_id))
 
     project_form = ProjectForm()
     sprint_form = SprintForm()
@@ -72,7 +71,6 @@ def project_add():
         user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
         new_project = Project(name=request.form['name'])
         new_project.users.append(user)
-
         db.session.add(new_project)
         db.session.commit()
         return redirect(url_for('project'))
