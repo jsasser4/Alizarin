@@ -27,10 +27,6 @@ class RegisterForm(FlaskForm):
 
     submit = SubmitField('Submit')
 
-    # noinspection PyMethodMayBeStatic
-    def validate_email(self, field):
-        if db.session.query(User).filter_by(email=field.data).count() != 0:
-            raise ValidationError('Username already in use.')
 
 
 class LoginForm(FlaskForm):
@@ -55,7 +51,6 @@ class ProjectForm(FlaskForm):
     class Meta:
         csrf = False
     name = StringField('Project Name', validators=[Length(1, 32)])
-    comment = TextAreaField('Comments', validators=[Length(1, 1024)])
     submit = SubmitField('Create Project')
 
 

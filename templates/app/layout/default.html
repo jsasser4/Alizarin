@@ -14,15 +14,11 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<div class="container-scroller">
-  <div class="container-fluid page-body-wrapper">
+<div class="container-fluid layout">
     {% include 'app/layout/sidebar.html' %}
-    <div class="main-panel">
-      <div class="content-wrapper">
-        {% block content %}{% endblock %}
-      </div>
-    </div>
-  </div>
+    <main class="content">
+        {% block content %} {% endblock %}
+    </main>
 </div>
 <script src="{{ url_for('static', filename='js/app/layout/default.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

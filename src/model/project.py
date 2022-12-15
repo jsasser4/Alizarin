@@ -1,27 +1,18 @@
 from datetime import datetime
-from sqlalchemy import ForeignKey, Integer, String, DateTime
+from sqlalchemy import DateTime
 
 from src import db
-from .user import User
-from .project_users import bridge_table
-
+from .project_users import project_users
 
 class Project(db.Model):
-    id: int = db.Column(Integer, primary_key=True)
-
-    name: str = db.Column(String(128))
-    comment: str = db.Column(String(1024))
-
-    created_by_id: int = db.Column(Integer, ForeignKey("user.id"))
-    created_by: User = db.relationship(User, foreign_keys=[created_by_id])
-
-    members = db.relationship(User, secondary=bridge_table, back_populates="projects")
+    __tablename__: str = "projects"
+    project_id = db.Column(db.Integer, primary_key=True)
+    name: str = db.Column(db.String(128))
+    users = db.relationship('User', secondary='project_users', back_populates='projects')
     created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 
-    __tablename__: str = "project"
-
-    def __int__(self, name: str, comment: str, created_by: User):
+    def __int__(self, name: str):
         self.name = name
-        self.comment = comment
-        self.created_by = created_by
-        self.members.append(created_by)
+
+    def __repr__(self):
+        return str(self.name)

@@ -1,0 +1,77 @@
+{% extends 'app/layout/default.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/app/projects.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app/projects.css') }}">
+{% endblock %}
+
+{% block header %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="card m-3">
+        <div class="card-header">
+            Sprint - 1234
+        </div>
+        <div class="card-body">
+            <div class="row align-items-stretch">
+                <div class="col-2 py-2">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Task Name
+                                <a class="btn btn-close float-end mb-1" role="button" aria-label="Close"></a>
+                            </h5>
+                            <p class="card-text">Test</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 py-2">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Task Name
+                                <a class="btn btn-close float-end mb-1" role="button" aria-label="Close"></a>
+                            </h5>
+                            <p class="card-text">Test</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2 py-2">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <form class="form-inline" id="task-add" name="taskadd"
+                                  action="{{ url_for("task_add", project_id=1, sprint_id=1) }}" method=post>
+                                <h5 class="card-title">
+                                    {{ task_form.name(class_="form-control form-control-sm", placeholder_="Task Name") }}
+                                </h5>
+                                <div class="card-text">
+                                    <div id="editable-description" contenteditable="true" class="form-control"
+                                         aria-multiline="true" placeholder="Description"></div>
+                                </div>
+                                {{ task_form.description(class_="d-none") }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card m-3">
+        <div class="card-header">
+            <form id="sprint-add" name="sprintadd" action="{{ url_for("sprint_add", project_id=1) }}" method=post
+                  class="d-block">
+                <div class="input-group">
+                    {{ sprint_form.name(class_="form-control", placeholder_="Create a new sprint") }}
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                            <i class="fa-regular fa-calendar-plus"></i>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
