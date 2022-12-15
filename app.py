@@ -15,11 +15,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.from_mapping(
     SECRET_KEY=b'\xd6\x04\xbdj\xfe\xed$c\x1e@\xad\x0f\x13,@G')
-
 db.init_app(app)
+
+
+@app.template_filter()
+def strftime(value, fmt="%H:%M %d-%m-%y"):
+    return value.strftime(fmt)
+
+
 
 with app.app_context():
     db.create_all()
+
 
 @app.route('/')
 @app.route('/index')
@@ -28,6 +35,7 @@ def index():
         return redirect(url_for('project'))
     else:
         return redirect(url_for('login'))
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -42,6 +50,7 @@ def login():
         return render_template("app/login.html", form=login_form)
     else:
         return render_template("app/login.html", form=login_form)
+
 
 @app.route('/project', methods=['POST', 'GET'])
 @app.route('/project/<project_id>', methods=['POST', 'GET'])
@@ -69,11 +78,11 @@ def project_add():
     project_form = ProjectForm()
     if project_form.validate_on_submit():
         user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
-        new_project = Project(name=request.form['name'])
+        new_project = Project(name=request.form['name'], created_by=user)
         new_project.users.append(user)
         db.session.add(new_project)
         db.session.commit()
-        return redirect(url_for('project'))
+        return redirect(url_for('project', project_id=new_project.project_id))
     return redirect(url_for('project'))
 
 
@@ -81,12 +90,13 @@ def project_add():
 def sprint_add(project_id: int):
     sprint_form = SprintForm()
     if sprint_form.validate_on_submit():
-        project: Project = db.session.query(Project).filter_by(project_id=project_id).one()
-        sprint: Sprint = Sprint(name=sprint_form.name, project=project)
+        p: Project = db.session.query(Project).filter_by(project_id=project_id).one()
+        sprint: Sprint = Sprint(name=request.form['name'], project=p)
         db.session.add(sprint)
         db.session.commit()
         return redirect(url_for('project'))
     return redirect(url_for('project'))
+
 
 @app.route('/task/add/<project_id>/<sprint_id>', methods=['POST', 'GET'])
 def task_add(project_id, sprint_id):

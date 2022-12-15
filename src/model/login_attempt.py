@@ -4,12 +4,11 @@ from src import db
 
 
 class LoginAttempt(db.Model):
-    id: int = db.Column(Integer, primary_key=True)
+    __tablename__ = "login_attempt"
+    login_attempt_id: int = db.Column(Integer, primary_key=True)
     email: str = db.Column(String(128))
     password_hash: str = db.Column(String(256))
-    created_at: datetime = db.Column(DateTime())
-
-    __tablename__ = "login_attempt"
+    created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 
     def __int__(self, name, email, password_hash):
         self.name = name

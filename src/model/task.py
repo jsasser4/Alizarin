@@ -5,14 +5,13 @@ from src import db
 from .sprint import Sprint
 from .project import Project
 
-
 class Task(db.Model):
     task_id: int = db.Column(Integer, primary_key=True)
     name: str = db.Column(String(128))
     description: str = db.Column(String(512))
 
     is_completed: bool = db.Column(Boolean())
-    created_at: datetime = db.Column(DateTime())
+    created_at: datetime = db.Column(DateTime, default=datetime.utcnow)
 
     __tablename__ = "tasks"
 
