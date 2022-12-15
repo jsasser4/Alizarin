@@ -25,7 +25,7 @@ with app.app_context():
 @app.route('/index')
 def index():
     if session.get('user'):
-        return redirect(url_for('projects'))
+        return redirect(url_for('project'))
     else:
         return redirect(url_for('login'))
 
@@ -38,7 +38,7 @@ def login():
         if checkpw(request.form['password'].encode('utf-8'), the_user.password_hash):
             session['user'] = the_user.first_name
             session['user_id'] = the_user.user_id
-            return redirect(url_for('projects'))
+            return redirect(url_for('project'))
         login_form.password.errors = ["Incorrect username or password."]
         return render_template("app/login.html", form=login_form)
     else:
@@ -48,7 +48,6 @@ def login():
 @app.route('/project/<project_id>', methods=['POST', 'GET'])
 def project(project_id=None):
     user = db.session.query(User).filter_by(user_id=session.get('user_id')).one()
-
     active_project = None
     if project_id is not None:
         active_project = db.session.query(Project).filter_by(project_id=project_id).one()
@@ -58,12 +57,12 @@ def project(project_id=None):
     project_form = ProjectForm()
     sprint_form = SprintForm()
     task_form = TaskForm()
-    return render_template("app/projects.html",
+    return render_template("app/project.html",
                            project_form=project_form,
                            sprint_form=sprint_form,
                            task_form=task_form,
                            projects=user.projects,
-                           active_projects=active_project)
+                           active_project=active_project)
 
 
 @app.route('/project/add', methods=['POST', 'GET'])
@@ -76,8 +75,8 @@ def project_add():
 
         db.session.add(new_project)
         db.session.commit()
-        return redirect(url_for('projects'))
-    return redirect(url_for('projects'))
+        return redirect(url_for('project'))
+    return redirect(url_for('project'))
 
 
 @app.route('/sprint/add/<project_id>', methods=['POST', 'GET'])
@@ -88,8 +87,8 @@ def sprint_add(project_id: int):
         sprint: Sprint = Sprint(name=sprint_form.name, project=project)
         db.session.add(sprint)
         db.session.commit()
-        return redirect(url_for('projects'))
-    return redirect(url_for('projects'))
+        return redirect(url_for('project'))
+    return redirect(url_for('project'))
 
 @app.route('/task/add/<project_id>/<sprint_id>', methods=['POST', 'GET'])
 def task_add(project_id, sprint_id):
@@ -100,8 +99,8 @@ def task_add(project_id, sprint_id):
         task = Task(name=task_form.name, description=task_form.description, project=project, sprint=sprint)
         db.session.add(task)
         db.session.commit()
-        return redirect(url_for('projects'))
-    return redirect(url_for('projects'))
+        return redirect(url_for('project'))
+    return redirect(url_for('project'))
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -120,7 +119,7 @@ def register():
         db.session.commit()
         session['user'] = first_name
         session['user_id'] = new_user.user_id
-        return redirect(url_for('projects'))
+        return redirect(url_for('project'))
     return render_template('app/register.html', form=form)
 
 

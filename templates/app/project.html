@@ -13,6 +13,7 @@
 {% block header %}Dashboard{% endblock %}
 
 {% block content %}
+    {% if active_project is not none %}
     <div class="card m-3">
         <div class="card-header">
             Sprint - 1234
@@ -74,4 +75,14 @@
             </form>
         </div>
     </div>
+    {% else %}
+    <div class="card m-3">
+        <div class="card-header">No Active Projects!</div>
+        <div class="card-body">
+            <p class="card-text">
+                Make a Project by using the sidebar to the right!
+            </p>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
